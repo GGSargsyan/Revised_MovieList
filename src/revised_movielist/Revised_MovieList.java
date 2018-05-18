@@ -8,46 +8,54 @@ package revised_movielist;
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Ed
  */
-public class Revised_MovieList 
+public class Revised_MovieList
 {
     /**
      * @param args the command line arguments
      */
     
-    private JFrame f;
+    //private static JFrame window_frame = new JFrame("Your Movie List");
+    private static JFrame window = new JFrame("Your Movie List");
     private JPanel p;
-    private JButton b1;
-    private JButton b2;
-    private JButton b3;
-    private JButton b4;
-    private JButton b5;
-    private JLabel lab;
+    private JButton add_to_list, remove_from_list, search_in_list, 
+                    export_to_excel;
+    
+    private JPanel panel_03 = new JPanel(new GridBagLayout());
     
     public Revised_MovieList()
     {
-        gui();
+        main_menu_gui();
     }
     
-    public void gui()
+    public void main_menu_gui()
     {
-        f = new JFrame("Your Movie List");
-        f.setVisible(true);
-        f.setSize(600, 400);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window = new JFrame("Your Movie List");
+        window.setVisible(true);
+        window.setSize(600, 400);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        p = new JPanel(new GridBagLayout());
+        //p = new JPanel(new GridBagLayout());
         //p.setBackground(Color.YELLOW);
         
-        b1 = new JButton("Button No.1");
-        b2 = new JButton("Button No.2");
-        b3 = new JButton("Button No.3");
-        b4 = new JButton("Button No.4");
-        b5 = new JButton("Button No.5");
+        add_to_list = new JButton("Add a movie");
+        remove_from_list = new JButton("Remove a movie");
+        search_in_list = new JButton("Search for movie");
+        export_to_excel = new JButton("Export your list");
         //lab = new JLabel("This is test label");
         
         GridBagConstraints c = new GridBagConstraints();
@@ -55,28 +63,27 @@ public class Revised_MovieList
         c.insets = new Insets(10,10,10,10);
         c.gridx = 0;
         c.gridy = 1;
-        p.add(b1,c);
+        panel_03.add(add_to_list,c);
         //p.add(lab);
         c.gridx = 0;
         c.gridy = 2;
-        p.add(b2,c);
+        panel_03.add(remove_from_list,c);
         c.gridx = 0;
         c.gridy = 3;
-        p.add(b3,c);
+        panel_03.add(search_in_list,c);
         c.gridx = 0;
         c.gridy = 4;
-        p.add(b4,c);
-        c.gridx = 0;
-        c.gridy = 5;
-        p.add(b5,c);
+        panel_03.add(export_to_excel,c);
         
         //f.add(p, BorderLayout.NORTH);
-        f.add(p, BorderLayout.WEST);
+        window.add(panel_03, BorderLayout.WEST);
     }
     
     public static void main(String[] args) 
     {
-        new Revised_MovieList();
+        //use_main_panel();
+        //new Revised_MovieList();
+        Main_Panel mp = new Main_Panel();
     }
     
 }
