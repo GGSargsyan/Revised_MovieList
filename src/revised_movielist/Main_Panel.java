@@ -18,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Main_Panel extends JFrame
+public class Main_Panel //extends JFrame
 {
     // This is the frame that all the panels will live on
     public static JFrame window = new JFrame("Your Movie List");
@@ -35,9 +35,11 @@ public class Main_Panel extends JFrame
     // Creates begin button for panel_01
     JButton click_to_start = new JButton("<html>Click to begin building<br />"
                                             + "your movie list!</html>");
+    
     // Creates the create and import buttons for panel_02
     JButton create_new_list = new JButton("Create new list");
     JButton import_list_in_excel = new JButton("Import list from excel");
+    
     // Creates the 4 main menu buttons for panel_03
     JButton add_to_list = new JButton("Add a movie");
     JButton remove_from_list = new JButton("Remove a movie");
@@ -54,6 +56,14 @@ public class Main_Panel extends JFrame
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
         
+        initComponent();
+        
+        initEvent();
+    }
+    
+    private void initComponent()
+    {
+        window.add(panel_01, BorderLayout.CENTER);
         
         // Set color for panels
         panel_01.setBackground(Color.LIGHT_GRAY);
@@ -71,9 +81,10 @@ public class Main_Panel extends JFrame
         panel_01.setVisible(true);
         panel_02.setVisible(false);
         panel_03.setVisible(false);
-
-        window.add(panel_01, BorderLayout.CENTER);
-        
+    }
+    
+    private void initEvent()
+    {
         click_to_start.addActionListener(new ActionListener() 
         {
             @Override
@@ -102,7 +113,7 @@ public class Main_Panel extends JFrame
         });
     }
     
-    public void create_main_menu_panel()
+    private void create_main_menu_panel()
     { 
         c.insets = new Insets(10,10,10,10);
         c.gridx = 0;
@@ -120,7 +131,7 @@ public class Main_Panel extends JFrame
         //window.add(panel_03, BorderLayout.WEST);
     }
     
-    public void create_new_or_import_panel()
+    private void create_new_or_import_panel()
     {
         c.insets = new Insets(10,10,10,10);
         c.gridx = 1;
