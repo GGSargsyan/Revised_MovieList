@@ -31,6 +31,8 @@ public class Main_Panel //extends JFrame
     JPanel panel_02 = new JPanel(new GridBagLayout());
     // will have main menu buttons
     JPanel panel_03 = new JPanel(new GridBagLayout());
+    // will have import buttons
+    JPanel panel_04 = new JPanel(new GridBagLayout());
     
     // Creates begin button for panel_01
     JButton click_to_start = new JButton("<html>Click to begin building<br />"
@@ -38,7 +40,7 @@ public class Main_Panel //extends JFrame
     
     // Creates the create and import buttons for panel_02
     JButton create_new_list = new JButton("Create new list");
-    JButton import_list_in_excel = new JButton("Import list from excel");
+    JButton import_list = new JButton("Import list");
     
     // Creates the 4 main menu buttons for panel_03
     JButton add_to_list = new JButton("Add a movie");
@@ -46,8 +48,13 @@ public class Main_Panel //extends JFrame
     JButton search_in_list = new JButton("Search for movie");
     JButton export_to_excel = new JButton("Export your list");
     
+    // Creates the Google Spreadsheet and Microsoft Excel buttons for panel_04
+    JButton google_spreadsheet = new JButton("Google Spreadsheet");
+    JButton microsoft_excel = new JButton("Microsoft Excel");
+    
     // A label used to display text
     JLabel label_01 = new JLabel("Choose an option");
+    JLabel label_02 = new JLabel("Choose an import option");
     
     Main_Panel()
     {
@@ -69,18 +76,20 @@ public class Main_Panel //extends JFrame
         panel_01.setBackground(Color.LIGHT_GRAY);
         panel_02.setBackground(Color.LIGHT_GRAY);
         panel_03.setBackground(Color.LIGHT_GRAY);
+        panel_04.setBackground(Color.LIGHT_GRAY);
         
         // Place begin button on panel 1
         panel_01.add(click_to_start);
         
         // Place option buttons on panel 2
         panel_02.add(create_new_list);
-        panel_02.add(import_list_in_excel);
+        panel_02.add(import_list);
         
         // Set visiblilty of all panels but panel_01 to false
         panel_01.setVisible(true);
         panel_02.setVisible(false);
         panel_03.setVisible(false);
+        panel_04.setVisible(false);
     }
     
     private void initEvent()
@@ -104,11 +113,25 @@ public class Main_Panel //extends JFrame
             public void actionPerformed(ActionEvent arg0) 
             {
                 create_new_list.setVisible(false);
-                import_list_in_excel.setVisible(false);
+                import_list.setVisible(false);
                 label_01.setVisible(false);
                 window.add(panel_03, BorderLayout.WEST);
                 panel_03.setVisible(true);
                 create_main_menu_panel();
+            }
+        });
+        
+        import_list.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent arg0) 
+            {
+                create_new_list.setVisible(false);
+                import_list.setVisible(false);
+                label_01.setVisible(false);
+                window.add(panel_04, BorderLayout.CENTER);
+                panel_04.setVisible(true);
+                create_first_import_panel();
             }
         });
     }
@@ -139,12 +162,25 @@ public class Main_Panel //extends JFrame
         panel_02.add(create_new_list,c);
         c.gridx = 3;
         c.gridy = 1;
-        panel_02.add(import_list_in_excel,c);
-        //c.anchor = GridBagConstraints.NORTH;
-        //panel_02.add(label_01,BorderLayout.NORTH);
+        panel_02.add(import_list,c);
         c.gridx = 2;
         c.gridy = 0;
         panel_02.add(label_01,c);
         label_01.setVisible(true);
+    }
+    
+    private void create_first_import_panel()
+    {
+        c.insets = new Insets(10,10,10,10);
+        c.gridx = 1;
+        c.gridy = 1;
+        panel_04.add(google_spreadsheet,c);
+        c.gridx = 3;
+        c.gridy = 1;
+        panel_04.add(microsoft_excel,c);
+        c.gridx = 2;
+        c.gridy = 0;
+        panel_04.add(label_02,c);
+        label_02.setVisible(true);
     }
 }
