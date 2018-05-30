@@ -16,7 +16,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Main_Panel //extends JFrame
 {
@@ -33,6 +35,8 @@ public class Main_Panel //extends JFrame
     JPanel panel_03 = new JPanel(new GridBagLayout());
     // will have import buttons
     JPanel panel_04 = new JPanel(new GridBagLayout());
+    // will have add movie fields
+    JPanel panel_05 = new JPanel(new GridBagLayout());
     
     // Creates begin button for panel_01
     JButton click_to_start = new JButton("<html>Click to begin building<br />"
@@ -52,9 +56,23 @@ public class Main_Panel //extends JFrame
     JButton google_spreadsheet = new JButton("Google Spreadsheet");
     JButton microsoft_excel = new JButton("Microsoft Excel");
     
-    // A label used to display text
+    // Creates the field texts for adding a movie on panel_05
+    JTextField movie_name_entry = new JTextField("");
+    JTextField movie_year_entry = new JTextField("");
+    //JButton submit_movie_button = new JButton("Submit Movie");
+    
+    // Various labels used to display text
     JLabel label_01 = new JLabel("Choose an option");
     JLabel label_02 = new JLabel("Choose an import option");
+    //JLabel label_03 = new JLabel("<html><p align=\"left\">Enter movie name:
+    //                                + "</p></html>");
+    //JLabel label_04 = new JLabel("<html><p align=\"left\">Enter movie year:
+    //                                + "</p></html>");
+    
+    // Object array to collect movie information when adding a movie to the list
+    public Object[] inputs = {"<html><p align=\"left\">Movie Name: </p></html>", 
+                                movie_name_entry, "<html><p align=\"left\">"
+                                + "Movie Year: </p></html>", movie_year_entry};
     
     Main_Panel()
     {
@@ -65,9 +83,9 @@ public class Main_Panel //extends JFrame
         
         initComponent();
         
-        initEvent();
+        initEvent();    
+
     }
-    
     private void initComponent()
     {
         window.add(panel_01, BorderLayout.CENTER);
@@ -77,6 +95,7 @@ public class Main_Panel //extends JFrame
         panel_02.setBackground(Color.LIGHT_GRAY);
         panel_03.setBackground(Color.LIGHT_GRAY);
         panel_04.setBackground(Color.LIGHT_GRAY);
+        panel_05.setBackground(Color.LIGHT_GRAY);
         
         // Place begin button on panel 1
         panel_01.add(click_to_start);
@@ -90,6 +109,7 @@ public class Main_Panel //extends JFrame
         panel_02.setVisible(false);
         panel_03.setVisible(false);
         panel_04.setVisible(false);
+        panel_05.setVisible(false);
     }
     
     private void initEvent()
@@ -132,6 +152,24 @@ public class Main_Panel //extends JFrame
                 window.add(panel_04, BorderLayout.CENTER);
                 panel_04.setVisible(true);
                 create_first_import_panel();
+            }
+        });
+        
+        add_to_list.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent arg0) 
+            {
+                create_add_movie_menu_panel();
+                
+                add_to_list.setVisible(false);
+                remove_from_list.setVisible(false);
+                search_in_list.setVisible(false);
+                export_to_excel.setVisible(false);
+                
+                //window.add(panel_05, BorderLayout.WEST);
+                
+                //panel_05.setVisible(true);
             }
         });
     }
@@ -182,5 +220,17 @@ public class Main_Panel //extends JFrame
         c.gridy = 0;
         panel_04.add(label_02,c);
         label_02.setVisible(true);
+    }
+    
+    private void create_add_movie_menu_panel()
+    { 
+        // showInputDialog
+        int result = JOptionPane.showConfirmDialog(panel_05, inputs,
+            "Enter Movie", JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) 
+        {
+         // TODO: do something with inputs
+        }
     }
 }
