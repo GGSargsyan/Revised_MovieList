@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -25,6 +26,7 @@ public class Main_Panel //extends JFrame
     // This is the frame that all the panels will live on
     public static JFrame window = new JFrame("Your Movie List");
     public GridBagConstraints c = new GridBagConstraints();
+    public HashMap<String, Integer> unsorted_movies = new HashMap<>();
         
     // These are the panels which will be populated
     // will have begin button
@@ -64,10 +66,6 @@ public class Main_Panel //extends JFrame
     // Various labels used to display text
     JLabel label_01 = new JLabel("Choose an option");
     JLabel label_02 = new JLabel("Choose an import option");
-    //JLabel label_03 = new JLabel("<html><p align=\"left\">Enter movie name:
-    //                                + "</p></html>");
-    //JLabel label_04 = new JLabel("<html><p align=\"left\">Enter movie year:
-    //                                + "</p></html>");
     
     // Object array to collect movie information when adding a movie to the list
     public Object[] inputs = {"<html><p align=\"left\">Movie Name: </p></html>", 
@@ -160,7 +158,7 @@ public class Main_Panel //extends JFrame
             @Override
             public void actionPerformed(ActionEvent arg0) 
             {
-                create_add_movie_menu_panel();
+                create_add_movie_dialog_box();
                 
                 add_to_list.setVisible(false);
                 remove_from_list.setVisible(false);
@@ -222,15 +220,43 @@ public class Main_Panel //extends JFrame
         label_02.setVisible(true);
     }
     
-    private void create_add_movie_menu_panel()
+    private void create_add_movie_dialog_box()
     { 
         // showInputDialog
         int result = JOptionPane.showConfirmDialog(panel_05, inputs,
             "Enter Movie", JOptionPane.OK_CANCEL_OPTION,
             JOptionPane.PLAIN_MESSAGE);
+        
         if (result == JOptionPane.OK_OPTION) 
         {
-         // TODO: do something with inputs
+            if ( check_valid_movie_year(inputs[3].toString()) )
+            {
+                // add movie to hashmap
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(panel_05, "Invalid movie year "
+                        + "choice!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
+    
+    private boolean check_valid_movie_year(String year)
+    {
+        int test_inputted_movie_year = 0;
+        try 
+        {
+            test_inputted_movie_year = Integer.parseInt( inputs[3].toString());
+            // check if year is a positive year
+            if ( test_inputted_movie_year < 0 )
+            {
+                return false;
+            }
+        }
+        catch(NumberFormatException e) 
+        { 
+            return false;
+        }
+        return true;    
     }
 }
