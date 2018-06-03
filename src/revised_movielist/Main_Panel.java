@@ -26,7 +26,7 @@ public class Main_Panel //extends JFrame
     // This is the frame that all the panels will live on
     public static JFrame window = new JFrame("Your Movie List");
     public GridBagConstraints c = new GridBagConstraints();
-    public HashMap<String, Integer> unsorted_movies = new HashMap<>();
+    public HashMap<String, Movie> unsorted_movies = new HashMap<>();
         
     // These are the panels which will be populated
     // will have begin button
@@ -68,9 +68,11 @@ public class Main_Panel //extends JFrame
     JLabel label_02 = new JLabel("Choose an import option");
     
     // Object array to collect movie information when adding a movie to the list
-    public Object[] inputs = {"<html><p align=\"left\">Movie Name: </p></html>", 
-                                movie_name_entry, "<html><p align=\"left\">"
-                                + "Movie Year: </p></html>", movie_year_entry};
+    //public Object[] inputs = {"<html><p align=\"left\">Movie Name: </p></html>", 
+                                //movie_name_entry, "<html><p align=\"left\">"
+                                //+ "Movie Year: </p></html>", movie_year_entry};
+    public Object[] inputs = {"Movie Name:", movie_name_entry, 
+                              "Movie Year:", movie_year_entry};
     
     Main_Panel()
     {
@@ -160,10 +162,10 @@ public class Main_Panel //extends JFrame
             {
                 create_add_movie_dialog_box();
                 
-                add_to_list.setVisible(false);
-                remove_from_list.setVisible(false);
-                search_in_list.setVisible(false);
-                export_to_excel.setVisible(false);
+                //add_to_list.setVisible(false);
+                //remove_from_list.setVisible(false);
+                //search_in_list.setVisible(false);
+                //export_to_excel.setVisible(false);
                 
                 //window.add(panel_05, BorderLayout.WEST);
                 
@@ -229,13 +231,27 @@ public class Main_Panel //extends JFrame
         
         if (result == JOptionPane.OK_OPTION) 
         {
-            if ( check_valid_movie_year(inputs[3].toString()) )
+            if ( chech_valid_movie_name(inputs[1].toString()) )
             {
-                // add movie to hashmap
+                if ( check_valid_movie_year(inputs[3].toString()) )
+                {
+                    // add movie to hashmap
+                    Movie insert_movie = create_movie();
+                    unsorted_movies.put(insert_movie.getName(), insert_movie);
+                    
+                    JOptionPane.showMessageDialog(panel_05, "Movie successfully added!", 
+                    "Complete", JOptionPane.PLAIN_MESSAGE);
+                    System.out.println("here");
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(panel_05, "Invalid movie year"
+                        + " choice!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             else
             {
-                JOptionPane.showMessageDialog(panel_05, "Invalid movie year "
+                JOptionPane.showMessageDialog(panel_05, "Invalid movie name "
                         + "choice!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -243,20 +259,39 @@ public class Main_Panel //extends JFrame
     
     private boolean check_valid_movie_year(String year)
     {
+        System.out.println(year);
         int test_inputted_movie_year = 0;
         try 
         {
-            test_inputted_movie_year = Integer.parseInt( inputs[3].toString());
+            test_inputted_movie_year = Integer.parseInt( year );
             // check if year is a positive year
-            if ( test_inputted_movie_year < 0 )
+            if ( test_inputted_movie_year <= 0 )
             {
+                System.out.println("1");
                 return false;
             }
         }
         catch(NumberFormatException e) 
         { 
+            System.out.println("2");
             return false;
         }
         return true;    
+    }
+    
+    private boolean chech_valid_movie_name(String name)
+    {
+        // checks if string is null, empty, or just whitespace
+        return !((name == null) || "".equals(name.trim()));
+    }
+    
+    private Movie create_movie()
+    {
+        String movie_name = inputs[1].toString();
+        int movie_year = Integer.parseInt(inputs[3].toString());
+        
+        
+        Movie new_movie = new Movie(movie_name, movie_year);
+        return new_movie;
     }
 }
