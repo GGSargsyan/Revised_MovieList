@@ -161,7 +161,8 @@ public class Main_Panel //extends JFrame
             public void actionPerformed(ActionEvent arg0) 
             {
                 create_add_movie_dialog_box();
-                
+                movie_name_entry.setText("");
+                movie_year_entry.setText("");
                 //add_to_list.setVisible(false);
                 //remove_from_list.setVisible(false);
                 //search_in_list.setVisible(false);
@@ -231,17 +232,16 @@ public class Main_Panel //extends JFrame
         
         if (result == JOptionPane.OK_OPTION) 
         {
-            if ( chech_valid_movie_name(inputs[1].toString()) )
+            if ( chech_valid_movie_name( movie_name_entry.getText()) )
             {
-                if ( check_valid_movie_year(inputs[3].toString()) )
+                if ( check_valid_movie_year( movie_year_entry.getText()) )
                 {
                     // add movie to hashmap
                     Movie insert_movie = create_movie();
-                    unsorted_movies.put(insert_movie.getName(), insert_movie);
+                    unsorted_movies.put(insert_movie.getName().trim(), insert_movie);
                     
                     JOptionPane.showMessageDialog(panel_05, "Movie successfully added!", 
                     "Complete", JOptionPane.PLAIN_MESSAGE);
-                    System.out.println("here");
                 }
                 else
                 {
@@ -259,7 +259,6 @@ public class Main_Panel //extends JFrame
     
     private boolean check_valid_movie_year(String year)
     {
-        System.out.println(year);
         int test_inputted_movie_year = 0;
         try 
         {
@@ -267,13 +266,11 @@ public class Main_Panel //extends JFrame
             // check if year is a positive year
             if ( test_inputted_movie_year <= 0 )
             {
-                System.out.println("1");
                 return false;
             }
         }
         catch(NumberFormatException e) 
         { 
-            System.out.println("2");
             return false;
         }
         return true;    
@@ -287,9 +284,8 @@ public class Main_Panel //extends JFrame
     
     private Movie create_movie()
     {
-        String movie_name = inputs[1].toString();
-        int movie_year = Integer.parseInt(inputs[3].toString());
-        
+        String movie_name = movie_name_entry.getText();
+        int movie_year = Integer.parseInt(movie_year_entry.getText());
         
         Movie new_movie = new Movie(movie_name, movie_year);
         return new_movie;
