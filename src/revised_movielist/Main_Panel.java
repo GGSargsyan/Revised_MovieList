@@ -12,7 +12,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -26,7 +29,7 @@ public class Main_Panel //extends JFrame
     // This is the frame that all the panels will live on
     public static JFrame window = new JFrame("Your Movie List");
     public GridBagConstraints c = new GridBagConstraints();
-    public HashMap<String, Movie> unsorted_movies = new HashMap<>();
+    public Map<String, List<Movie>> unsorted_movies = new HashMap<>();
         
     // These are the panels which will be populated
     // will have begin button
@@ -160,17 +163,20 @@ public class Main_Panel //extends JFrame
             @Override
             public void actionPerformed(ActionEvent arg0) 
             {
-                create_add_movie_dialog_box();
+                create_add_movie_dialog_box(unsorted_movies);
                 movie_name_entry.setText("");
                 movie_year_entry.setText("");
-                //add_to_list.setVisible(false);
-                //remove_from_list.setVisible(false);
-                //search_in_list.setVisible(false);
-                //export_to_excel.setVisible(false);
-                
-                //window.add(panel_05, BorderLayout.WEST);
-                
-                //panel_05.setVisible(true);
+            }
+        });
+        
+        search_in_list.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent arg0) 
+            {
+                search_movie_dialog_box(unsorted_movies);
+                movie_name_entry.setText("");
+                movie_year_entry.setText("");
             }
         });
     }
@@ -223,7 +229,7 @@ public class Main_Panel //extends JFrame
         label_02.setVisible(true);
     }
     
-    private void create_add_movie_dialog_box()
+    private void create_add_movie_dialog_box(Map<String, List<Movie>> insert_map)
     { 
         // showInputDialog
         int result = JOptionPane.showConfirmDialog(panel_05, inputs,
@@ -232,16 +238,80 @@ public class Main_Panel //extends JFrame
         
         if (result == JOptionPane.OK_OPTION) 
         {
-            if ( chech_valid_movie_name( movie_name_entry.getText()) )
+            if ( check_valid_movie_name( movie_name_entry.getText()) )
             {
                 if ( check_valid_movie_year( movie_year_entry.getText()) )
                 {
                     // add movie to hashmap
                     Movie insert_movie = create_movie();
-                    unsorted_movies.put(insert_movie.getName().trim(), insert_movie);
                     
-                    JOptionPane.showMessageDialog(panel_05, "Movie successfully added!", 
-                    "Complete", JOptionPane.PLAIN_MESSAGE);
+                    boolean key_exists = insert_map.containsKey(insert_movie.getName());
+                    if ( !key_exists )
+                    {
+                        // create new list if key mapping doesn't exist
+                        List<Movie> insert_list = new ArrayList<>();
+                        insert_list.add(insert_movie);
+                        insert_map.put(insert_movie.getName(), insert_list);
+                    }
+                    else
+                    {
+                        // if key mapping exists then insert into existing list
+                        // get the existing list
+                        List<Movie> value_list = insert_map.get(insert_movie.getName());
+                        // put the new movie object in that list
+                        value_list.add(insert_movie);
+                    }
+                    JOptionPane.showMessageDialog(panel_05, "Movie successfully"
+                                + " added!", "Complete", JOptionPane.PLAIN_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(panel_05, "Invalid movie year"
+                        + " choice!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(panel_05, "Invalid movie name "
+                        + "choice!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void search_movie_dialog_box(Map<String, List<Movie>> search_map)
+    { 
+        // showInputDialog
+        int result = JOptionPane.showConfirmDialog(panel_05, inputs,
+            "Search Movie", JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+        boolean found = false;
+        
+        if (result == JOptionPane.OK_OPTION) 
+        {
+            if ( check_valid_movie_name( movie_name_entry.getText()) )
+            {
+                if ( check_valid_movie_year( movie_year_entry.getText()) )
+                {
+                    // find movie in hashmap
+                    Movie search_movie = create_movie();
+                    List<Movie> temp = search_map.get(
+                                    movie_name_entry.getText().trim());
+                    
+                    for ( Movie m : temp)
+                    {
+                        if ( search_movie.getName().equals( m.getName() ) && 
+                             search_movie.getYear() == m.getYear() )
+                        {
+                            JOptionPane.showMessageDialog(panel_05, "Movie found in"
+                                + " list!", "Found", JOptionPane.PLAIN_MESSAGE);
+                            found = true;
+                        }
+                    }
+                    if ( !found )
+                    {
+                        JOptionPane.showMessageDialog(panel_05,"Movie not found"
+                                +" in list!","Not Found",JOptionPane.PLAIN_MESSAGE);
+                    }
                 }
                 else
                 {
@@ -262,7 +332,7 @@ public class Main_Panel //extends JFrame
         int test_inputted_movie_year = 0;
         try 
         {
-            test_inputted_movie_year = Integer.parseInt( year );
+            test_inputted_movie_year = Integer.parseInt( year.trim() );
             // check if year is a positive year
             if ( test_inputted_movie_year <= 0 )
             {
@@ -276,7 +346,7 @@ public class Main_Panel //extends JFrame
         return true;    
     }
     
-    private boolean chech_valid_movie_name(String name)
+    private boolean check_valid_movie_name(String name)
     {
         // checks if string is null, empty, or just whitespace
         return !((name == null) || "".equals(name.trim()));
@@ -284,8 +354,8 @@ public class Main_Panel //extends JFrame
     
     private Movie create_movie()
     {
-        String movie_name = movie_name_entry.getText();
-        int movie_year = Integer.parseInt(movie_year_entry.getText());
+        String movie_name = movie_name_entry.getText().trim();
+        int movie_year = Integer.parseInt(movie_year_entry.getText().trim());
         
         Movie new_movie = new Movie(movie_name, movie_year);
         return new_movie;
