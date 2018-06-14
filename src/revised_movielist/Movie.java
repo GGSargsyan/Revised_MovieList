@@ -5,7 +5,7 @@
  */
 package revised_movielist;
 
-public class Movie 
+public class Movie implements Comparable<Movie>
 {
     // Data members of movies
     private String movieName;
@@ -67,4 +67,17 @@ public class Movie
     {
         movieYear = year;
     }
+    
+    public int compareTo(Movie other)
+    {
+        return this.Custom_toString().compareToIgnoreCase(
+                                          other.Custom_toString());
+    }
+    
+    String Custom_toString()
+    {
+        return (movieName + movieYear);
+    }
+    
+    
 }
