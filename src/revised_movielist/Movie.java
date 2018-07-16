@@ -63,7 +63,7 @@ public class Movie implements Comparable<Movie>
      * Mutator used to set a movies object's year.
      * @param year
      */
-    public void setName(int year)
+    public void setYear(int year)
     {
         movieYear = year;
     }
@@ -78,6 +78,5 @@ public class Movie implements Comparable<Movie>
     {
         return (movieName + movieYear);
     }
-    
-    
+      
 }

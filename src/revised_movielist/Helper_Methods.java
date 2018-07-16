@@ -1,4 +1,4 @@
-/*
+ /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,19 +9,25 @@ import java.util.Arrays;
 import java.util.Map;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import java.util.PriorityQueue;
 
 
 class Helper_Methods 
 {
 
+    /**
+     * Checks to see if a proper movie name was entered
+     * @param name
+     */
     boolean check_valid_movie_name(String name) 
     {
         // checks if string is null, empty, or just whitespace
         return !((name == null) || "".equals(name.trim()));
     }
     
-    
+    /**
+     * Checks to see if a proper movie year was entered
+     * @param year
+     */
     boolean check_valid_movie_year(String year)
     {
         int test_inputted_movie_year = 0;
@@ -41,6 +47,12 @@ class Helper_Methods
         return true;    
     }
     
+    /**
+     * Checks to see if the movie is correctly populated from the
+     * JTextField values
+     * @param name
+     * @param year
+     */
     Movie create_movie(JTextField name, JTextField year)
     {
         String movie_name = name.getText().trim();
@@ -50,13 +62,15 @@ class Helper_Methods
         return new_movie;
     }
     
-    
+    /**
+     * Creates a JTable of ordered movies from the given Map
+     * @param movie_map
+     * @param movie_count
+     */
     JTable scrollable_movie_list(Map<String, Movie> movie_map, int movie_count)
     {
-        //System.out.println(movie_map);
+        
         Movie[] movie_array = new Movie[movie_count];
-        // fill array with movies
-        //Set<String> setOfKeys = movie_map.keySet();
         
         int array_add_index = 0;
         // get all the keys
@@ -72,7 +86,6 @@ class Helper_Methods
         Arrays.sort(movie_array);
         
         // Now put each movie name and year into the jtable
-        //DefaultTableModel table = new DefaultTableModel(movie_count, 0);
         String[][] data = new String[movie_count][2];
         for (int i = 0; i < movie_count; i++) 
         {
@@ -88,12 +101,4 @@ class Helper_Methods
         JTable table = new JTable(data, columnNames);
         return table;
     }
-    /*
-    PriorityQueue<Movie> create_sorted_list( Movie[] unsorted_movies )
-    {
-        PriorityQueue<Movie> pq = new PriorityQueue<Movie>( new MovieComp() );
-        for ( Movie m : unsorted_movies )
-            pq.offer(m);
-        return pq;
-    }*/
 }
