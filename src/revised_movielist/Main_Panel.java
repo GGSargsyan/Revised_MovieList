@@ -62,10 +62,12 @@ public class Main_Panel extends Helper_Methods
     JButton remove_from_list = new JButton("Remove a movie");
     JButton search_in_list = new JButton("Search for movie");
     JButton export_to_excel = new JButton("Export your list");
+    JButton save_and_return = new JButton("Save and Return");
     
     // Creates the Google Spreadsheet and Microsoft Excel buttons for panel_04
     JButton google_spreadsheet = new JButton("Google Spreadsheet");
     JButton microsoft_excel = new JButton("Microsoft Excel");
+    JButton go_back_button = new JButton("Go Back");
     
     // Creates the field texts for adding a movie on panel_05
     JTextField movie_name_entry = new JTextField("");
@@ -101,6 +103,7 @@ public class Main_Panel extends Helper_Methods
         remove_from_list.setPreferredSize(PREF_SIZE);
         search_in_list.setPreferredSize(PREF_SIZE);
         export_to_excel.setPreferredSize(PREF_SIZE);
+        save_and_return.setPreferredSize(PREF_SIZE);
         create_new_list.setPreferredSize(PREF_SIZE);
         import_list.setPreferredSize(PREF_SIZE);
                         
@@ -147,6 +150,7 @@ public class Main_Panel extends Helper_Methods
             @Override
             public void actionPerformed(ActionEvent arg0) 
             {
+                panel_02.setVisible(false);
                 create_new_list.setVisible(false);
                 import_list.setVisible(false);
                 label_01.setVisible(false);
@@ -163,12 +167,45 @@ public class Main_Panel extends Helper_Methods
             @Override
             public void actionPerformed(ActionEvent arg0) 
             {
+                panel_02.setVisible(false);
                 create_new_list.setVisible(false);
                 import_list.setVisible(false);
                 label_01.setVisible(false);
                 window.add(panel_04, BorderLayout.CENTER);
                 panel_04.setVisible(true);
                 create_first_import_panel();
+            }
+        });
+        
+        go_back_button.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent arg0) 
+            {
+                panel_04.setVisible(false);
+                google_spreadsheet.setVisible(false);
+                microsoft_excel.setVisible(false);
+                go_back_button.setVisible(false);
+                label_02.setVisible(false);
+                panel_02.setVisible(true);
+                create_new_or_import_panel();
+                create_new_list.setVisible(true);
+                import_list.setVisible(true);
+            }
+        });
+        
+        save_and_return.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent arg0) 
+            {
+                panel_03.setVisible(false);
+                panel_05.setVisible(false);
+                myScrollPane.setVisible(false);
+                create_new_or_import_panel();
+                panel_02.setVisible(true);
+                create_new_list.setVisible(true);
+                import_list.setVisible(true);
             }
         });
         
@@ -223,6 +260,9 @@ public class Main_Panel extends Helper_Methods
         c.gridx = 0;
         c.gridy = 4;
         panel_03.add(export_to_excel,c);
+        c.gridx = 0;
+        c.gridy = 5;
+        panel_03.add(save_and_return,c);
         
         c.gridx = 1;
         c.gridy = 1;
@@ -250,19 +290,29 @@ public class Main_Panel extends Helper_Methods
         label_01.setVisible(true);
     }
     
+    //TODO
     private void create_first_import_panel()
     {
         c.insets = new Insets(10,10,10,10);
-        c.gridx = 1;
-        c.gridy = 1;
-        panel_04.add(google_spreadsheet,c);
-        c.gridx = 3;
-        c.gridy = 1;
-        panel_04.add(microsoft_excel,c);
         c.gridx = 2;
         c.gridy = 0;
         panel_04.add(label_02,c);
         label_02.setVisible(true);
+        google_spreadsheet.setPreferredSize(PREF_SIZE);
+        c.gridx = 1;
+        c.gridy = 1;
+        panel_04.add(google_spreadsheet,c);
+        google_spreadsheet.setVisible(true);
+        microsoft_excel.setPreferredSize(PREF_SIZE);
+        c.gridx = 3;
+        c.gridy = 1;
+        panel_04.add(microsoft_excel,c);
+        microsoft_excel.setVisible(true);
+        go_back_button.setPreferredSize(PREF_SIZE);
+        c.gridx = 1;
+        c.gridy = 3;
+        panel_04.add(go_back_button,c);
+        go_back_button.setVisible(true);
     }
     
     private void movie_scroll_list()
@@ -413,13 +463,11 @@ public class Main_Panel extends Helper_Methods
                     }
                     else 
                     {
-                        System.out.println(remove_map);
                         remove_map.remove(key);
                         
                         JOptionPane.showMessageDialog(panel_03, "Movie removed "
                             + "from list!", "Found", JOptionPane.PLAIN_MESSAGE);
                         movie_count--;
-                        System.out.println(remove_map);
                     }
                 }
                 else
